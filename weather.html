@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+
+    <!-- bootstrap -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+
+    <!-- google fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <!--font-awesome -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="./weather.css">
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row w-100">
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-7 d-flex justify-content-center flex-column">
+                <h2 class="d-flex justify-content-center align-items-center" id="head">Know The Weather</h2>
+
+                <div class="d-flex justify-content-center mt-5 rounded-4 ">
+                    <input id="inputValue" type="search" placeholder="Enter your location" class="form-control"
+                        aria-label="search">
+
+                    <button class="ms-3 fa-solid fa-magnifying-glass btn btn-success rounded-5"
+                        onclick="search()"></button>
+
+                </div>
+
+
+                <div class="container row w-100 px-5 py-4  mt-5" id="result">
+                    <div class="col-md-2">
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+            <div class="col-md-4">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+    const search = async () => {
+        console.log(inputValue.value);
+        if (inputValue.value) {
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inputValue.value}&appid=5fe36b192ffd1c36dffb6752bc1722b2`)
+            console.log(response);
+            response.json().then((data) => {
+                console.log(data);
+
+                //country
+                const country = data.sys.country
+                console.log(country);
+
+                //humidity
+                const humidity = data.main.humidity
+                console.log(humidity);
+
+                //Weather
+
+                const weather = data.weather[0].main
+                console.log(weather);
+
+
+                //temperature
+
+                const temp = data.main.temp
+                console.log(temp);
+
+
+                //pressure
+
+                const pressure = data.main.pressure
+                console.log(pressure);
+
+                //wind speed
+
+                const windspeed = data.wind.speed
+                console.log(windspeed);
+
+                //feels like
+
+                const feels = data.main.feels_like
+                console.log(feels);
+
+
+                result.innerHTML = `
+                <div class="col-md-6 rounded-2 border border-outline-light" id="border">
+                        <div class="row w-100" id="result">
+                            <div class="col-md-6">
+                                <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather02-512.png" id="img" alt="no weather">
+
+                                <div class="text">
+                                    <h3  class="text-light" style="font-size: 30px; font-weight: bolder;">${inputValue.value} , ${country}</h3>
+
+                                </div>
+
+                                <div class="text">
+                                    <h3 class="text-light">${Math.round(temp - 273.15)} °C </h3>
+
+                                </div>
+
+                                <div class="text">
+                                    <h3 class="text-light">${weather}</h3>
+
+                                </div>
+                                
+
+                            </div>
+
+    
+                            <div class="col-md-6  p-3" style="margin-top: 35px;">
+
+                                <div class="weather">
+                                    Humidity : ${humidity}
+                                </div>
+                                <div class="weather">
+                                    Pressure : ${pressure}
+
+                                </div>
+                                <div class="weather">
+                                    Wind Speed : ${windspeed}
+
+                                </div>
+                                <div class="weather">
+                                     Feels Like : ${feels}
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    `
+
+
+            })
+
+        }
+        else {
+            alert("please enter your location")
+
+        }
+
+    }
+</script>
+
+</html>
